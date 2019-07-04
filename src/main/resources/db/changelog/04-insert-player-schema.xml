@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="04" author="Valen">
+        <insert tableName="player">
+            <column name="name" value="Sanchez"/>
+            <column name="age" value="21"/>
+            <column name="team_id" value="0"/>
+        </insert>
+        <insert tableName="player">
+            <column name="name" value="Lopez"/>
+            <column name="age" value="18"/>
+            <column name="team_id" value="1"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

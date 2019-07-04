@@ -1,0 +1,267 @@
+swagger: "2.0"
+info:
+  description: "Team Manager demo application."
+  version: "1.0.0"
+  title: "Swagger Team Manager"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "petstore.swagger.io"
+basePath: "/api"
+schemes:
+  - "https"
+  - "http"
+
+paths:
+  /teams:
+    get:
+      tags:
+        - "team"
+      summary: "Get all teams."
+      description: ""
+      operationId: "getAllTeams"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "All teams have been retrieved"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Team"
+        405:
+          description: "Invalid input"
+    post:
+      tags:
+        - "team"
+      summary: "Add a new team."
+      description: ""
+      operationId: "addTeam"
+      consumes:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Team object that needs to be added."
+          required: true
+          schema:
+            $ref: "#/definitions/Team"
+      responses:
+        201:
+          description: "Team creation was successful"
+        405:
+          description: "Invalid input"
+  /teams/{teamId}:
+    get:
+      tags:
+        - "team"
+      summary: "Finds Teams by Id"
+      description: ""
+      operationId: "findTeamById"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "teamId"
+          description: "ID of team to return"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Team"
+        400:
+          description: "Invalid id value"
+    put:
+      tags:
+        - "team"
+      summary: "Update an existing team"
+      description: ""
+      operationId: "updateTeam"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Team object that needs to be updated."
+          required: true
+          schema:
+            $ref: "#/definitions/Team"
+        - in: "path"
+          name: "teamId"
+          description: "ID of team to return"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        400:
+          description: "Invalid ID"
+        404:
+          description: "Team not found"
+        405:
+          description: "Validation exception"
+    delete:
+      tags:
+        - "team"
+      summary: "Delete Teams by Id"
+      description: ""
+      operationId: "deleteTeamById"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "teamId"
+          description: "ID of team to return"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Team"
+        400:
+          description: "Invalid id value"
+
+  /teams/{teamId}/players:
+    get:
+      tags:
+        - "player"
+      summary: "Get all players."
+      description: ""
+      operationId: "getAllPlayers"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "teamId"
+          description: "ID of team to return"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Player"
+        400:
+          description: "Invalid id value"
+    post:
+      tags:
+        - "player"
+      summary: "Add a new player."
+      description: ""
+      operationId: "addPlayer"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Player object that needs to be added."
+          required: true
+          schema:
+            $ref: "#/definitions/Player"
+        - in: "path"
+          name: "teamId"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        405:
+          description: "Invalid input"
+  /teams/{teamId}/player/{playerId}:
+    get:
+      tags:
+        - "player"
+      summary: "Finds Players by Id"
+      description: ""
+      operationId: "findPlayerById"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "playerId"
+          description: "ID of player to return"
+          required: true
+          type: "integer"
+          format: "int64"
+        - in: "path"
+          name: "teamId"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Player"
+        400:
+          description: "Invalid id value"
+    delete:
+      tags:
+        - "player"
+      summary: "Delete Players by Id"
+      description: ""
+      operationId: "deletePlayerById"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "teamId"
+          required: true
+          type: "integer"
+          format: "int64"
+        - in: "path"
+          name: "playerId"
+          required: true
+          type: "integer"
+          format: "int64"
+
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Team"
+        400:
+          description: "Invalid id value"
+
+definitions:
+  Team:
+    type: "object"
+    required:
+      - id
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      players:
+        type: "array"
+        items:
+          $ref: "#/definitions/Player"
+
+  Player:
+    type: "object"
+    required:
+      - id
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      age:
+        type: "integer"
+        format: "int32"
