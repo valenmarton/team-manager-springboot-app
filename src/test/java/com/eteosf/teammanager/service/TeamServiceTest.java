@@ -18,8 +18,7 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 @RunWith(JUnit4.class)
 @ActiveProfiles("test")
@@ -55,9 +54,44 @@ public class TeamServiceTest {
         //when
         TeamDto resultDto = teamService.getTeam(1L);
 
-        //when
+        //then
         assertThat("could not retrieve team", resultDto, is(expectedDto));
     }
 
+    @Test
+    public void testFindAllTeams() {
+        //given
+        final List<PlayerDto> playerDtoList = new ArrayList<>();
+        final PlayerDto playerDto1 = new PlayerDto(1L, "Ronaldo", 15);
+        playerDtoList.add(playerDto1);
+        final List<TeamDto> expectedDtoList = new ArrayList<>();
+        final TeamDto teamDto = new TeamDto(1L, "Barca", playerDtoList);
+        expectedDtoList.add(teamDto);
 
+        final List<PlayerEntity> playerEntityList = new ArrayList<>();
+        final PlayerEntity playerEntity = new PlayerEntity("Ronaldo", 15, null);
+        playerEntity.setId(1L);
+        playerEntityList.add(playerEntity);
+        final List<TeamEntity> teamEntityList = new ArrayList<>();
+        final TeamEntity teamEntity = new TeamEntity("Barca", 1L, playerEntityList);
+        teamEntityList.add(teamEntity);
+
+        Mockito.when(teamRepository.findAll()).thenReturn(teamEntityList);
+
+        //when
+        final List<TeamDto> resultDtoList = teamService.getAllTeams();
+
+        //then
+        assertThat("could not retrieve teams", resultDtoList, is(expectedDtoList));
+    }
+
+    @Test
+    public void testCreateOneTeam() {
+        //when
+        teamService.createTeam(any());
+
+        //then
+        verify(teamService, only()).createTeam(any());
+
+    }
 }
